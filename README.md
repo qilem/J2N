@@ -1,102 +1,126 @@
-Nominal Adjectives Identification
-This repository contains the dataset and models for identifying nominal adjectives (JN) in text. The models include a Hidden Markov Model (HMM), Maximum Entropy (MaxEnt) model, and a BERT-based model. The repository also includes scripts for training and evaluating these models.
 
-Table of Contents
-Introduction
-Dataset
-Models
-Hidden Markov Model (HMM)
-Maximum Entropy Model (MaxEnt)
-BERT Model
-Usage
-Dataset Preparation
-Training and Evaluating Models
-Future Work
-Contributing
-License
-Introduction
-In English, a word's part of speech can vary depending on its context. This project aims to identify "nominal adjectives" (JN), which are adjectives that function as nouns in certain contexts. For instance, in the phrase "the poor are housed in high-rise-project apartments," the word "poor" acts as a noun.
+# Nominal Adjectives Identification
+
+This repository contains the dataset and models for identifying nominal adjectives (JN) in text.
+The models include a Hidden Markov Model (HMM), Maximum Entropy (MaxEnt) model, and a BERT-based model.
+The repository also includes scripts for training and evaluating these models.
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Dataset](#dataset)
+- [Models](#models)
+  - [Hidden Markov Model (HMM)](#hidden-markov-model-hmm)
+  - [Maximum Entropy Model (MaxEnt)](#maximum-entropy-model-maxent)
+  - [BERT Model](#bert-model)
+- [Usage](#usage)
+  - [Dataset Preparation](#dataset-preparation)
+  - [Training Models](#training-models)
+  - [Evaluation](#evaluation)
+- [Future Work](#future-work)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Introduction
+In English, a word's part of speech can vary depending on its context. This project aims to identify "nominal adjectives" (JN),
+which are adjectives that function as nouns in certain contexts.
+For instance, in the phrase "the poor are housed in high-rise-project apartments," the word "poor" acts as a noun.
 
 This repository includes:
+- A dataset with annotated nominal adjectives.
+- Scripts for training and evaluating HMM, MaxEnt, and BERT models to identify these nominal adjectives.
 
-A dataset with annotated nominal adjectives.
-Scripts for training and evaluating HMM, MaxEnt, and BERT models to identify these nominal adjectives.
-Dataset
-The dataset is based on the Wall Street Journal corpus (WSJ_02-21.pos-chunk) and contains approximately 1.9 million words. About 1,100 target words have been identified as nominal adjectives (JN). The dataset format is as follows:
+## Dataset
+The dataset is based on the Wall Street Journal corpus (WSJ_02-21.pos-chunk) and contains approximately 1.9 million words.
+About 1,100 target words have been identified as nominal adjectives (JN). The dataset format is as follows:
 
-Each line consists of a word, POS tag, BIO tag, and a numerical tag indicating whether the word is a nominal adjective (0 for no, 1 for yes), separated by tabs.
-Empty lines separate sentences.
-Example:
+- Each line consists of a word, POS tag, BIO tag, and a numerical tag indicating whether the word is a nominal adjective (0 for no, 1 for yes), separated by tabs.
+- Empty lines separate sentences.
 
-word1    POS1    BIO1    0
-word2    POS2    BIO2    0
-word3    POS3    BIO3    1
+### Example:
+word1 POS1 BIO1 0
 
-word4    POS4    BIO4    0
-Models
-Hidden Markov Model (HMM)
-The HMM model is trained to perform POS tagging with an additional tag for nominal adjectives (JN). The model leverages the Viterbi algorithm to predict tags for each word in a sentence. It handles out-of-vocabulary (OOV) items by applying heuristic rules based on word patterns—such as capitalization and common suffixes—to assign probable tags, thereby enhancing its ability to accurately tag words not encountered during training.
 
-Training and Running the HMM Model
-To run the part-of-speech tagging system with the HMM model:
+## Models
 
-bash
+### Hidden Markov Model (HMM)
+The HMM model is trained to perform POS tagging with an additional tag for nominal adjectives (JN).
+The model's goal is to improve tagging accuracy by correctly identifying JN words.
 
-python trainHMM.py <training_file> <test_file> <output_file>
-Replace <training_file>, <test_file>, and <output_file> with the paths to your training data, test sentences, and desired output file, respectively.
+### Maximum Entropy Model (MaxEnt)
+The MaxEnt model is another approach to POS tagging and BIO chunking, incorporating the JN tag to see if it improves chunking performance.
 
-Maximum Entropy Model (MaxEnt)
-The MaxEnt model uses feature extraction from the dataset to perform POS tagging and BIO chunking. It creates two output files: a training feature file from the training corpus and a test feature file from the development corpus.
+### BERT Model
+The BERT model is fine-tuned to identify nominal adjectives in text without pre-existing POS or BIO chunk tags.
+This model uses a weighted loss function to address the class imbalance of JN tags in the dataset.
 
-Feature Extraction
-To extract features from the dataset:
+## Usage
 
-bash
+### Dataset Preparation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/qilem/J2N.git
 
-python feature_extracting.py training.pos-chunk training.feature testing.pos test.feature
-Training and Running the MaxEnt Model
-For Linux, Apple, and other POSIX systems:
+### Training Models
+- **HMM Model:**
+  ```
+  python trainHMM.py <training_file> <test_file> <output_file>
+  ```
 
-bash
+- **MaxEnt Model:**
+  ```
+  do:
+  python feature_extracting.py training.pos-chunk training.feature testing.pos test.feature
 
-javac -cp maxent-3.0.0.jar:trove.jar *.java
-java -cp .:maxent-3.0.0.jar:trove.jar MEtrain training.feature model.chunk
-java -cp .:maxent-3.0.0.jar:trove.jar MEtag test.feature model.chunk response.chunk
-For Windows:
+  Compile and run MEtrain.java, giving it the feature-enhanced training file as input;
+  it will produce a MaxEnt model. MEtrain and MEtest use the maxent and trove packages,
+  so you must include the corresponding jar files, maxent-3.0.0.jar and trove.jar, on the classpath when you compile and run.
+  Assuming all java files are in the same directory, the following command-line commands will compile and run these programs --
+  these commands are slightly different for posix systems (Linux or Apple), than for Microsoft Windows.
 
-bash
+  For Linux, Apple and other Posix systems, do:
+  javac -cp maxent-3.0.0.jar:trove.jar *.java ### compiling
+  java -cp .:maxent-3.0.0.jar:trove.jar MEtrain training.feature model.chunk ### creating the model of the training data
+  java -cp .:maxent-3.0.0.jar:trove.jar MEtag test.feature model.chunk response.chunk ### creating the system output
 
-javac -cp "maxent-3.0.0.jar;trove.jar" *.java
-java -Xmx14g -cp ".;maxent-3.0.0.jar;trove.jar" MEtrain training.feature model.chunk
-java -cp ".;maxent-3.0.0.jar;trove.jar" MEtag test.feature model.chunk response.chunk
-Scoring
-To score the MaxEnt model:
+  For Windows Only -- Use semicolons instead of colons in each of the above commands, i.e., the command for Windows would be:
+  javac -cp "maxent-3.0.0.jar;trove.jar" *.java
+  java -Xmx14g -cp ".;maxent-3.0.0.jar;trove.jar" MEtrain training.feature model.chunk
+  java -cp ".;maxent-3.0.0.jar;trove.jar" MEtag test.feature model.chunk response.chunk
+  ```
 
-bash
+- **BERT Model:**
+  ```
+  python j2nrobot.py
+  ```
 
-python score.chunk.py key.pos-chunk response.chunk
-BERT Model
-The BERT model is fine-tuned to identify nominal adjectives in text without pre-existing POS or BIO chunk tags. This model uses a weighted loss function to address the class imbalance of JN tags in the dataset.
+### Evaluation
+Evaluate the trained models on the test set:
 
-Training and Running the BERT Model
-To train the BERT model:
+- **HMM Model:**
+  ```
+  python score.py <model_file> <test_file>
+  ```
 
-bash
+- **MaxEnt Model:**
+  ```
+  python score.chunk.py <model_file> <test_file> <output_file>
+  ```
 
-python train_bert.py --dataset path/to/dataset --epochs 10 --batch_size 16
-To evaluate the BERT model:
 
-bash
-
-python evaluate_bert.py --model path/to/trained_bert_model --dataset path/to/test_dataset
-Future Work
+## Future Work
 Future directions for this project include:
+- Exploring the impact of the JN tag on various NLP tasks such as semantic analysis, text simplification, sentiment analysis, and machine translation.
+- Expanding the dataset to include more instances of nominal adjectives.
+- Improving the accuracy and robustness of the nominal adjective recognition models.
 
-Exploring the impact of the JN tag on various NLP tasks such as semantic analysis, text simplification, sentiment analysis, and machine translation.
-Expanding the dataset to include more instances of nominal adjectives.
-Improving the accuracy and robustness of the nominal adjective recognition models.
-Contributing
+## Contributing
 Contributions are welcome! Please open an issue or submit a pull request if you have suggestions or improvements.
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+
+
+From: Lemeng Qi <lq2057@nyu.edu>
+Sent: Saturday, May 18, 2024 12:58 AM
+To: qilemeng@163.com <qilemeng@163.com>
+Subject:
+ 
+？
