@@ -87,9 +87,6 @@ This model uses a weighted loss function to address the class imbalance of JN ta
   java -Xmx14g -cp ".;maxent-3.0.0.jar;trove.jar" MEtrain training.feature model.chunk
   java -cp ".;maxent-3.0.0.jar;trove.jar" MEtag test.feature model.chunk response.chunk
   ```
-  **Coref Demo:**
-  Make sure you have Spacy 3.0.0. Change iscustom in diy_spacy_coref_han_yang.py, 0 means run with default pos tagger and 1 means run with custom pos tagger. Then python 
-  diy_spacy_coref_han_yang.py.
   
 - **BERT Model:**
   ```
@@ -108,8 +105,10 @@ Evaluate the trained models on the test set:
   ```
   python score.chunk.py <model_file> <test_file> <output_file>
   ```
-
-
+### Coref Demo
+  Make sure you have Spacy 3.0.0. Change iscustom in diy_spacy_coref_han_yang.py, 0 means run with default pos tagger and 1 means run with custom pos tagger. Then python 
+  diy_spacy_coref_han_yang.py.
+  
 ## Future Work
 Future directions for this project include:
 - Exploring the impact of the JN tag on various NLP tasks such as semantic analysis, text simplification, sentiment analysis, and machine translation.
