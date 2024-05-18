@@ -87,7 +87,10 @@ This model uses a weighted loss function to address the class imbalance of JN ta
   java -Xmx14g -cp ".;maxent-3.0.0.jar;trove.jar" MEtrain training.feature model.chunk
   java -cp ".;maxent-3.0.0.jar;trove.jar" MEtag test.feature model.chunk response.chunk
   ```
-
+  **Coref Demo:**
+  Make sure you have Spacy 3.0.0. Change iscustom in diy_spacy_coref_han_yang.py, 0 means run with default pos tagger and 1 means run with custom pos tagger. Then python 
+  diy_spacy_coref_han_yang.py.
+  
 - **BERT Model:**
   ```
   python j2nrobot.py
