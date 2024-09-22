@@ -3,7 +3,8 @@
 
 This repository contains the dataset and models for identifying nominal adjectives (JN) in text.
 The models include a Hidden Markov Model (HMM), Maximum Entropy (MaxEnt) model, and a BERT-based model.
-The repository also includes scripts for training and evaluating these models.
+The repository also includes scripts for training and evaluating these models. Additionally, the co-reference resolution experiment can be found in the GitHub repository: [POSCorefImpact](https://github.com/DeadCardassian/POSCorefImpact).
+
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -107,7 +108,7 @@ Evaluate the trained models on the test set:
   ```
 ### Coref Demo
   Make sure you have Spacy 3.0.0. Change iscustom in diy_spacy_coref_han_yang.py, 0 means run with default pos tagger and 1 means run with custom pos tagger. Then python 
-  diy_spacy_coref_han_yang.py.
+  diy_spacy_coref_han_yang.py. Additionally, the details of co-reference resolution experiment can be found in the GitHub repository: [POSCorefImpact](https://github.com/DeadCardassian/POSCorefImpact).
   
 ## Future Work
 Future directions for this project include:
@@ -117,12 +118,3 @@ Future directions for this project include:
 
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request if you have suggestions or improvements.
-
-
-
-From: Lemeng Qi <lq2057@nyu.edu>
-Sent: Saturday, May 18, 2024 12:58 AM
-To: qilemeng@163.com <qilemeng@163.com>
-Subject:
- 
-？
